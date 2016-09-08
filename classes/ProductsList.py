@@ -1,29 +1,46 @@
 from tkinter import *
+from classes.Product import *
 
 class ProductsList(Frame):
 
-    def __init__(self, parent):
-        Frame.__init__(self, parent)
+    def __init__(self, parent, *args, **kw):
+        Frame.__init__(self, parent, *args, **kw)
         self.parent = parent
         
-        self.grid(row=0, column=0, sticky=N+E+W+S)
-        Grid.columnconfigure(parent, 0, weight=1) 
-        Grid.rowconfigure(parent, 0, weight=1) 
-
         self.initChildren()
+        self.createProducts()
 
     def initChildren(self):
-        scrollbar = Scrollbar(self)
-        scrollbar.pack(side=RIGHT, fill=Y, expand=False)
-        canvas = Canvas(self, bd=0, highlightthickness=0, yscrollcommand=scrollbar.set)
-        canvas.pack(side=LEFT, fill=BOTH, expand=True)
-        scrollbar.config(command=canvas.yview)
+        self.canvas = Canvas(self, background='black')
+        self.frame = Frame(self.canvas, background='white')
+        self.frame.grid_propagate(False)
+        self.scrollbar = Scrollbar(self, orient=VERTICAL, command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side=RIGHT, fill=Y)
+        self.canvas.pack(side=LEFT, fill=BOTH, expand=True)
+        self.frame_id = self.canvas.create_window(0, 0, window=self.frame, anchor=NW)
+        self.frame.bind_all('<MouseWheel>', self._on_mousewheel)
+        def _configure_frame(event):
+            size = (self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
+            self.canvas.config(scrollregion='0 0 %s %s' % size)
+            if self.frame.winfo_reqwidth() != self.canvas.winfo_width():
+                self.canvas.config(width=self.frame.winfo_reqwidth())
+        self.frame.bind('<Configure>', _configure_frame)
+        def _configure_canvas(event):
+            if self.frame.winfo_reqwidth() != self.canvas.winfo_width():
+                self.canvas.itemconfigure(self.frame_id, width=self.canvas.winfo_width())
+                print(self.canvas.winfo_width())
+        self.canvas.bind('<Configure>', _configure_canvas)
 
-        self.frame = frame = Frame(canvas)
-        frame['bg'] = 'cyan'
-        frame.pack(fill=BOTH, expand=True)
+    def _on_mousewheel(self, event):
+        self.canvas.yview_scroll(-1 * (event.delta / 120), 'units')
+        print('Wheel')
 
-        test_button = Button(frame, text='test text')
-        test_button.pack()
+    def createProducts(self):
+        for i in range(0, 50):
+            product = Product(self.frame, width=500, height=100)
+            product.pack_propagate(0)
+            product.pack()
+
 
 

@@ -17,6 +17,12 @@ class ColumnsSection(Frame):
 
     def initChildren(self):
         products_list = ProductsList(self)
+        products_list.grid(row=0, column=0, sticky=N+E+W+S)
+        Grid.columnconfigure(self, 0, weight=1) 
+        Grid.rowconfigure(self, 0, weight=1) 
+
         recipes_list = RecipesList(self)
-        
+        recipes_list.grid(row=0, column=1, sticky=N+E+W+S)
+        Grid.columnconfigure(self, 1, weight=3) 
+        Grid.rowconfigure(self, 0, weight=1) 
 
