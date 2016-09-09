@@ -19,7 +19,9 @@ class ProductsList(Frame):
         self.scrollbar.pack(side=RIGHT, fill=Y)
         self.canvas.pack(side=LEFT, fill=BOTH, expand=True)
         self.frame_id = self.canvas.create_window(0, 0, window=self.frame, anchor=NW)
-        self.frame.bind_all('<MouseWheel>', self._on_mousewheel)
+        self.canvas.bind_all('<MouseWheel>', self._on_mousewheel)
+        self.canvas.bind_all('<Button-4>', self._on_mousewheel)
+        self.canvas.bind_all('<Button-5>', self._on_mousewheel)
         def _configure_frame(event):
             size = (self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
             self.canvas.config(scrollregion='0 0 %s %s' % size)
@@ -33,8 +35,12 @@ class ProductsList(Frame):
         self.canvas.bind('<Configure>', _configure_canvas)
 
     def _on_mousewheel(self, event):
-        self.canvas.yview_scroll(-1 * (event.delta / 120), 'units')
-        print('Wheel')
+        direction = 0
+        if event.num == 5 or event.delta == -120:
+            direction = 1
+        if event.num == 4 or event.delta == 120:
+            direction = -1
+        self.canvas.yview_scroll(direction, UNITS)
 
     def createProducts(self):
         for i in range(0, 50):
