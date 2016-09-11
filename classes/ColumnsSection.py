@@ -21,5 +21,4 @@ class ColumnsSection(Frame, BaseClass):
         self.recipes_list = RecipesList(self)
         self.recipes_list.grid(row=0, column=1, sticky=N+E+W+S)
         Grid.columnconfigure(self, 1, weight=3) 
-        Grid.rowconfigure(self, 0, weight=1) 
 
