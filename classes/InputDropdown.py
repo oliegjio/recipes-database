@@ -7,55 +7,54 @@ class InputDropdown(Frame, BaseClass):
         Frame.__init__(self, parent)
         BaseClass.__init__(self)
         self.parent = parent
-        if kw['width']: self.width = kw['width']
+        if kw['width']: self._width = kw['width']
 
-        self.search_var = StringVar()
-        self.search_var.trace('w', lambda name, index, mode: self._update_list())
-        self.entry = Entry(
+        self._search_var = StringVar()
+        self._search_var.trace('w', lambda name, index, mode: self._update_list())
+        self._entry = Entry(
             self,
-            textvariable=self.search_var,
-            width=self.width,
+            textvariable=self._search_var,
+            width=self._width,
             font=('Halvetica', 12, 'normal', 'normal')
         )
-        self.entry.pack()
-        self.entry.bind('<FocusIn>', self._focus_in)
-        self.entry.bind('<FocusOut>', self._focus_out)
-        self.entry.bind('<Button-1>', self._focus_in)
+        self._entry.pack()
+        self._entry.bind('<FocusIn>', self._focus_in)
+        self._entry.bind('<FocusOut>', self._focus_out)
+        self._entry.bind('<Button-1>', self._focus_in)
         self.get_root().bind('<Button-1>', self._focus_out)
-        # self.entry.grid(column=2, row=0, padx=(0, 40), sticky=W)
 
     def _update_list(self):
-        search_term = self.search_var.get()
+        search_term = self._search_var.get()
         
         listbox_list = ['Apple', 'Cake', 'Egg']
 
-        self.listbox.delete(0, END)
+        self._listbox.delete(0, END)
 
         for item in listbox_list:
             if search_term.lower() in item.lower():
-                self.listbox.insert(END, item)
+                self._listbox.insert(END, item)
 
     def _focus_in(self, event):
-        if getattr(self, 'listbox', False):
+        if getattr(self, '_listbox', False):
             return
-        self.listbox = Listbox(
+        self._listbox = Listbox(
             self.get_root(),
-            width=self.width,
+            width=self._width,
             font=('Halvetica', 12, 'normal', 'normal')
         )
-        self.listbox.bind('<<ListboxSelect>>', self._listbox_select)
-        self.listbox.place(x=self.winfo_x() + 1, y=self.winfo_y() + 25)
+        self._listbox.bind('<<ListboxSelect>>', self._listbox_select)
+        self._listbox.place(x=self.winfo_x() + 1, y=self.winfo_y() + 25)
         self._update_list()
 
     def _focus_out(self, event):
-        if getattr(self, 'listbox', False) and (event.widget == self.entry or event.widget == self.listbox):
+        if getattr(self, '_listbox', False) and (event.widget == self._entry or event.widget == self._listbox):
             return
-        if getattr(self, 'listbox', False):
+        if getattr(self, '_listbox', False):
             self._destroy_list()
 
     def _destroy_list(self):
-        self.listbox.destroy()
-        self.listbox = None
+        self._listbox.destroy()
+        self._listbox = None
         self._remove_focus_from_entry()
 
     def _remove_focus_from_entry(self):
