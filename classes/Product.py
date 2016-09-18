@@ -23,9 +23,9 @@ class Product(Frame, BaseClass):
             self,
             text='Cupcake',
             bg='white',
-            font=('Halvetica', 13, 'normal', 'underline')
+            font=('Halvetica', 12, 'normal', 'bold')
         )
-        name.grid(column=1, row=1, sticky=W, padx=(20, 0), pady=(0, 10))
+        name.grid(column=1, row=1, sticky=W, padx=(10, 0), pady=(0, 10))
 
         delete = Button(
             self,
@@ -34,7 +34,8 @@ class Product(Frame, BaseClass):
             fg='red',
             command=self.delete_event,
             borderwidth=0,
-            highlightthickness=0
+            highlightthickness=0,
+            font=('Halvetica', 10, 'normal', 'underline')
         )
         delete.grid(column=0, row=0, sticky=W, pady=(10, 5), padx=(15, 0))
 
@@ -45,7 +46,8 @@ class Product(Frame, BaseClass):
             fg='green',
             borderwidth=0,
             highlightthickness=0,
-            command=self.edit_event
+            command=self.edit_event,
+            font=('Halvetica', 10, 'normal', 'underline')
         )
         edit.grid(column=1, row=0, sticky=E, pady=(10, 5), padx=(0, 15))
 

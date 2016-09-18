@@ -21,20 +21,21 @@ class ProductsList(Frame, BaseClass, Scrollable):
             text='New',
             bg='orange',
             fg='white',
-            borderwidth=0,
-            highlightthickness=0,
+            borderwidth=1,
+            highlightthickness=1,
+            highlightbackground='white',
+            highlightcolor='white',
             height=1,
             width=5,
-            font=('Halvetica', 18, 'bold')
+            font=('Halvetica', 14, 'bold')
         )
-        # add_new.pack(side=BOTTOM, fill=BOTH)
-        add_new.place(relx=1, rely=1, x=-130, y=-45)
+        add_new.place(relx=1, rely=1, x=-110, y=-40)
 
         self.update_root()
 
     def create_products(self):
         for i in range(0, 30):
-            product = Product(self.frame, height=100)
+            product = Product(self.frame)
             product.pack_propagate(0)
             product.pack(fill=BOTH, pady=2)
 

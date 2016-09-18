@@ -15,10 +15,10 @@ class ColumnsSection(Frame, BaseClass):
     def init_children(self):
         self.products_list = ProductsList(self)
         self.products_list.grid(row=0, column=0, sticky=N+E+W+S)
-        Grid.columnconfigure(self, 0, weight=1) 
+        Grid.columnconfigure(self, 0, weight=2) 
         Grid.rowconfigure(self, 0, weight=1) 
 
         self.recipes_list = RecipesList(self)
         self.recipes_list.grid(row=0, column=1, sticky=N+E+W+S)
-        Grid.columnconfigure(self, 1, weight=3) 
+        Grid.columnconfigure(self, 1, weight=2) 
 

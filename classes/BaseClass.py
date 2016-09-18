@@ -12,3 +12,7 @@ class BaseClass():
             self.parent.update()
             self.parent.update_idletasks()
 
+    def get_root(self):
+        if(getattr(self, 'root', False)):
+            return self.root
+        return self.parent.get_root()
