@@ -2,6 +2,10 @@ from tkinter import *
 from classes.Product import *
 from classes.BaseClass import *
 from classes.Scrollable import *
+# from StringIO import StringIO
+from io import StringIO, BytesIO
+from base64 import *
+import struct
 
 class ProductsList(Frame, BaseClass, Scrollable):
 
@@ -14,7 +18,9 @@ class ProductsList(Frame, BaseClass, Scrollable):
 
         self.frame['bg'] = 'lightgrey'
 
-        self.create_products()
+        self._products = dict()
+
+        # self.create_products()
 
         add_new = Button(
             self,
@@ -38,11 +44,18 @@ class ProductsList(Frame, BaseClass, Scrollable):
     def _on_search_ask(self, event):
         data = event.data
 
-        
+        self.database.query("select * from products where name like '%{}%'".format(data))
+        fetched_products = self.database.fetch_all()
+        if fetched_products:
+            for key in self._products.keys():
+                self._products[key].pack_forget()
+                self._products[key].destroy()
+            for product in fetched_products:
+                self._create_product(product[0], BytesIO(product[1]))
 
-    def create_products(self):
-        for i in range(0, 30):
-            product = Product(self.frame)
-            product.pack_propagate(0)
-            product.pack(fill=BOTH, pady=2)
+    def _create_product(self, name, picture):
+        product = Product(self.frame, name=name, picture=picture)    
+        self._products[name] = product
+        product.pack_propagate(0)
+        product.pack(fill=BOTH, pady=2)
 

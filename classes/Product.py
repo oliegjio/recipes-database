@@ -5,8 +5,10 @@ from classes.BaseClass import *
 class Product(Frame, BaseClass):
 
     def __init__(self, parent, *args, **kw):
-        Frame.__init__(self, parent, *args, **kw)
+        Frame.__init__(self, parent)
         BaseClass.__init__(self)
+        if kw['picture']: self.picture = kw['picture']
+        if kw['name']: self.name = kw['name']
 
         self['bg'] = 'white'
 
@@ -14,14 +16,14 @@ class Product(Frame, BaseClass):
         
         image_size = 70
 
-        picture = ImageTk.PhotoImage(Image.open('cupcake.jpg').resize((image_size, image_size), Image.ANTIALIAS))
+        picture = ImageTk.PhotoImage(Image.open(self.picture).resize((image_size, image_size), Image.ANTIALIAS))
         picture_label = Label(self, image=picture, bg='lightgrey')
         picture_label.image = picture
         picture_label.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
 
         name = Label(
             self,
-            text='Cupcake',
+            text=self.name,
             bg='white',
             font=('Halvetica', 12, 'normal', 'bold')
         )

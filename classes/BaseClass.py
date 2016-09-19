@@ -1,9 +1,11 @@
 from classes.Event import *
+from classes.Database import *
 
 class BaseClass():
 
     def __init__(self):
         self.event_dispatcher = EventDispatcher()
+        self.database = Database()
 
     def update_root(self):
         self.update()
