@@ -33,6 +33,13 @@ class ProductsList(Frame, BaseClass, Scrollable):
 
         self.update_root()
 
+        self.event_dispatcher.add_event_listener(Search.ASK, self._on_search_ask)
+
+    def _on_search_ask(self, event):
+        data = event.data
+
+        
+
     def create_products(self):
         for i in range(0, 30):
             product = Product(self.frame)

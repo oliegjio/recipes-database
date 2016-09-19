@@ -35,8 +35,8 @@ class InputDropdown(Frame, BaseClass):
                 self._listbox.insert(END, item)
 
     def _focus_in(self, event):
-        if getattr(self, '_listbox', False):
-            return
+        if getattr(self, '_listbox', False): return
+
         self._listbox = Listbox(
             self.get_root(),
             width=self._width,
@@ -47,15 +47,15 @@ class InputDropdown(Frame, BaseClass):
         self._update_list()
 
     def _focus_out(self, event):
-        if getattr(self, '_listbox', False) and (event.widget == self._entry or event.widget == self._listbox):
-            return
+        print('Focus out')
+        if getattr(self, '_listbox', False) and (event.widget == self._entry or event.widget == self._listbox): return
         if getattr(self, '_listbox', False):
             self._destroy_list()
+            self._remove_focus_from_entry()
 
     def _destroy_list(self):
         self._listbox.destroy()
         self._listbox = None
-        self._remove_focus_from_entry()
 
     def _remove_focus_from_entry(self):
         self.get_root().focus()
@@ -64,7 +64,5 @@ class InputDropdown(Frame, BaseClass):
         widget = event.widget
         selection = widget.curselection()
         value = widget.get(selection[0])
-
-        print(value)
 
         self._destroy_list()

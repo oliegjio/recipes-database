@@ -11,7 +11,7 @@ class ColumnsSection(Frame, BaseClass):
         self.parent = parent
 
         self.init_children()
-
+    
     def init_children(self):
         self.products_list = ProductsList(self)
         self.products_list.grid(row=0, column=0, sticky=N+E+W+S)

@@ -1,7 +1,9 @@
+from classes.Event import *
+
 class BaseClass():
 
     def __init__(self):
-        pass
+        self.event_dispatcher = EventDispatcher()
 
     def update_root(self):
         self.update()
