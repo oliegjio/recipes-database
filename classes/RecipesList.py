@@ -16,9 +16,9 @@ class RecipesList(Frame, BaseClass, Scrollable):
         
         self.frame.configure(bg='lightgrey')
 
-        self.create_recipes()
+        self._create_recipes()
         
-        add_new = CustomButton(
+        self._button_add_new = CustomButton(
             self,
             view='border_orange',
             text='New',
@@ -26,9 +26,9 @@ class RecipesList(Frame, BaseClass, Scrollable):
             height=1,
             font=(self.default_font, 14, 'bold')
         )
-        add_new.place(relx=1, rely=1, x=-110, y=-40)
+        self._button_add_new.place(relx=1, rely=1, x=-110, y=-40)
 
-    def create_recipes(self):
+    def _create_recipes(self):
         for i in range(0, 30):
             recipe = Recipe(self.frame)
             recipe.pack(fill=BOTH, pady=2)

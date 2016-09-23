@@ -9,45 +9,45 @@ class Product(Frame, BaseClass):
     def __init__(self, parent, *args, **kw):
         Frame.__init__(self, parent)
         BaseClass.__init__(self)
-        if kw['picture']: self.picture = kw['picture']
-        if kw['name']: self.name = kw['name']
 
+        if kw['picture']: self._picture = kw['picture']
+        if kw['name']: self._name = kw['name']
         self['bg'] = 'white'
 
         Grid.columnconfigure(self, 1, weight=1)
         
-        picture = CustomPicture(
+        self._picture_product = CustomPicture(
             self,
-            picture=self.picture,
+            picture=self._picture,
             size=70
         )
-        picture.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
+        self._picture_product.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
 
-        name = CustomLabel(
+        self._label_product_name = CustomLabel(
             self,
             font=(self.default_font, 11, 'bold'),
-            text=self.name
+            text=self._name
         )
-        name.grid(column=1, row=1, sticky=W, padx=(10, 0), pady=(0, 10))
+        self._label_product_name.grid(column=1, row=1, sticky=W, padx=(10, 0), pady=(0, 10))
 
-        delete = CustomButton(
+        self._button_delete_product = CustomButton(
             self,
             view='normal_red',
             text='Delete',
-            command=self.delete_event
+            command=self._on_button_delete_product_click
         )
-        delete.grid(column=0, row=0, sticky=W, pady=(10, 5), padx=(15, 0))
+        self._button_delete_product.grid(column=0, row=0, sticky=W, pady=(10, 5), padx=(15, 0))
 
-        edit = CustomButton(
+        self._button_edit_product = CustomButton(
             self,
             view='normal_green',
             text='Edit',
-            command=self.edit_event
+            command=self._on_button_edit_product_click
         )
-        edit.grid(column=1, row=0, sticky=E, pady=(10, 5), padx=(0, 15))
+        self._button_edit_product.grid(column=1, row=0, sticky=E, pady=(10, 5), padx=(0, 15))
 
-    def delete_event(self):
+    def _on_button_delete_product_click(self):
         print('Delete event')
 
-    def edit_event(self):
+    def _on_button_edit_product_click(self):
         print('Edit event')

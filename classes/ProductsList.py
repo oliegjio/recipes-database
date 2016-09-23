@@ -15,12 +15,11 @@ class ProductsList(Frame, BaseClass, Scrollable):
         Scrollable.__init__(self)
 
         self.parent = parent
-
         self.frame['bg'] = 'lightgrey'
 
         self._visible_products = list()
 
-        add_new = CustomButton(
+        self._button_add_new = CustomButton(
             self,
             view='border_orange',
             text='New',
@@ -28,22 +27,22 @@ class ProductsList(Frame, BaseClass, Scrollable):
             width=5,
             font=(self.default_font, 14, 'bold')
         )
-        add_new.place(relx=1, rely=1, x=-110, y=-40)
-        add_new.bind('<Button-1>', self._add_new_click)
+        self._button_add_new.place(relx=1, rely=1, x=-110, y=-40)
+        self._button_add_new.bind('<Button-1>', self._on_button_add_new_click)
 
         self._cache_products()
-        self._display_all_products()
+        self._show_all_products()
 
-        self.event_dispatcher.add_event_listener(SearchEvent.ASK, self._on_search_ask)
-        self.event_dispatcher.add_event_listener(NewProductEvent.ASK, self._on_new_product_ask)
+        self.event_dispatcher.add_event_listener(SearchEvent.ASK, self._on_search_event_ask)
+        self.event_dispatcher.add_event_listener(NewProductEvent.ASK, self._on_new_product_event_ask)
 
-    def _on_new_product_ask(self, event):
+    def _on_new_product_event_ask(self, event):
         data = event.data
         self._products[data['name']] = self._create_product(data['name'], data['picture'])
-        self._display_all_products()
+        self._show_all_products()
 
-    def _add_new_click(self, event):
-        new_product_dialog = ProductDialog(self.get_root())
+    def _on_button_add_new_click(self, event):
+        ProductDialog(self.get_root())
     
     def _forget_products(self):
         for product in self._products.keys():
@@ -67,14 +66,15 @@ class ProductsList(Frame, BaseClass, Scrollable):
 
         return matches
 
-    def _display_all_products(self):
+    def _show_all_products(self):
         self._forget_products()
         for product in self._products:
             self._products[product].pack(fill=BOTH, pady=2)
 
-    def _on_search_ask(self, event):
+    def _on_search_event_ask(self, event):
         matches = self._search_product(event.data)
         self._show_products(matches)
+        self.reset_scroll()
 
     def _show_products(self, products):
         self._forget_products()

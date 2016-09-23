@@ -13,8 +13,8 @@ class ProductDialog(Toplevel, BaseClass):
     def __init__(self, parent, data=None):
         Toplevel.__init__(self, parent)
         BaseClass.__init__(self)
-        self.parent = parent
 
+        self.parent = parent
         self['bg'] = 'white'
 
         self.geometry('400x350')
@@ -25,70 +25,73 @@ class ProductDialog(Toplevel, BaseClass):
 
         self._bottom_padding = 20
 
-        self._exit_button = CustomButton(
+        self._button_exit = CustomButton(
             self,
             view='normal_red',
             text='Cancel',
-            command=self._exit_button_click
+            command=self._on_button_exit_click
         )
-        self._exit_button.grid(row=4, column=0, pady=(0, self._bottom_padding))
+        self._button_exit.grid(row=4, column=0, pady=(0, self._bottom_padding))
         
-        self._apply_button = CustomButton(
+        self._button_apply = CustomButton(
             self,
             view='normal_green',
             text='Apply',
-            command=self._apply_button_click
+            command=self._on_button_apply_click
         )
-        self._apply_button.grid(row=4, column=2, pady=(0, self._bottom_padding))
+        self._button_apply.grid(row=4, column=2, pady=(0, self._bottom_padding))
         
-        self._change_picture_button = CustomButton(
+        self._button_change_picture = CustomButton(
             self,
             view='normal_blue',
             text='Change Picture',
-            command=self._change_picture_button_click
+            command=self._on_button_change_picture_click
         )
-        self._change_picture_button.grid(row=1, column=1, sticky=N)
+        self._button_change_picture.grid(row=1, column=1, sticky=N)
 
-        self._picture_label = CustomPicture(
+        self._picture = CustomPicture(
             self,
             picture=self._get_placeholder(),
             size=150
         )
-        self._picture_label.grid(column=1, row=0, pady=(20, 0))
+        self._picture.grid(column=1, row=0, pady=(20, 0))
 
-        self._name_field = CustomEntry(self)
-        self._name_field.grid(row=2, column=1, columnspan=2)
+        self._entry_name = CustomEntry(self)
+        self._entry_name.grid(row=2, column=1, columnspan=2)
 
-        self._name_label = CustomLabel(
+        self._label_name = CustomLabel(
             self,
             text='Product Name: '
         )
-        self._name_label.grid(row=2, column=0, sticky=E)
+        self._label_name.grid(row=2, column=0, sticky=E)
 
-    def _change_picture_button_click(self):
+    def _on_button_change_picture_click(self):
         picture_path = filedialog.askopenfilename()
+
         the_file = open(picture_path, 'rb')
         self._new_picture = the_file.read()
+
         the_file.close()
-        self._picture_label.set_image(self._new_picture)
+
+        self._picture.set_picture(self._new_picture)
 
     def _get_placeholder(self):
         self.database.query('select `blob` from meta where text = "placeholder"')
         return self.database.fetch_one()[0]
 
-    def _exit_button_click(self):
+    def _on_button_exit_click(self):
         self.destroy()
 
-    def _apply_button_click(self):
-        if self._name_field.get() == "" or not hasattr(self, '_new_picture'): return
+    def _on_button_apply_click(self):
+        if self._entry_name.get() == "" or not hasattr(self, '_new_picture'): return
 
         self.database.query(
             'insert into products (name, picture) values (?, ?)',
-            [self._name_field.get(), self._new_picture]
+            [self._entry_name.get(), self._new_picture]
         )
 
         data = dict()
-        data['name'] = self._name_field.get()
+        data['name'] = self._entry_name.get()
         data['picture'] = self._new_picture
 
         self.event_dispatcher.dispatch_event(NewProductEvent(NewProductEvent.ASK, data))

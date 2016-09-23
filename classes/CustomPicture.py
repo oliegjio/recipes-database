@@ -14,13 +14,14 @@ class CustomPicture(CustomLabel, BaseClass):
 
         del kw['picture']
         del kw['size'] 
-        kw['image'] = picture
 
+        kw['image'] = picture
         CustomLabel.__init__(self, parent, **kw)
+
         self.image = picture
 
-    def set_image(self, image):
-        picture = ImageTk.PhotoImage(Image.open(BytesIO(image)).resize((self._size, self._size), Image.ANTIALIAS))
+    def set_picture(self, picture):
+        picture = ImageTk.PhotoImage(Image.open(BytesIO(picture)).resize((self._size, self._size), Image.ANTIALIAS))
         self['image'] = picture
         self.image = picture
 

@@ -5,21 +5,21 @@ class Database():
     class __Database():
 
         def __init__(self):
-            self.connection = sqlite3.connect('data.db')
-            self.cursor = self.connection.cursor()
+            self._connection = sqlite3.connect('data.db')
+            self._cursor = self._connection.cursor()
 
         def query(self, query, sequence=None):
             if sequence == None:
-                self.cursor.execute(query)
+                self._cursor.execute(query)
             else:
-                self.cursor.execute(query, sequence)
-            self.connection.commit()
+                self._cursor.execute(query, sequence)
+            self._connection.commit()
 
         def fetch_one(self):
-            return self.cursor.fetchone()
+            return self._cursor.fetchone()
 
         def fetch_all(self):
-            return self.cursor.fetchall()
+            return self._cursor.fetchall()
             
 
     instance = None
