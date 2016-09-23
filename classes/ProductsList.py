@@ -2,10 +2,9 @@ from tkinter import *
 from classes.Product import *
 from classes.BaseClass import *
 from classes.Scrollable import *
-# from StringIO import StringIO
+from classes.SearchEvent import *
 from io import StringIO, BytesIO
-from base64 import *
-import struct
+import re
 
 class ProductsList(Frame, BaseClass, Scrollable):
 
@@ -18,9 +17,7 @@ class ProductsList(Frame, BaseClass, Scrollable):
 
         self.frame['bg'] = 'lightgrey'
 
-        self._products = dict()
-
-        # self.create_products()
+        self._visible_products = list()
 
         add_new = Button(
             self,
@@ -37,25 +34,47 @@ class ProductsList(Frame, BaseClass, Scrollable):
         )
         add_new.place(relx=1, rely=1, x=-110, y=-40)
 
-        self.update_root()
+        self._cache_products()
+        self._display_all_products()
 
-        self.event_dispatcher.add_event_listener(Search.ASK, self._on_search_ask)
+        self.event_dispatcher.add_event_listener(SearchEvent.ASK, self._on_search_ask)
+
+    def _cache_products(self):
+        self._products = dict()
+        
+        self.database.query('select * from products')
+        products = self.database.fetch_all()
+        for product in products:
+            self._products[product[0]] = self._create_product(product[0], BytesIO(product[1]))
+
+    def _search_product(self, query):
+        matches = list()
+        
+        for product_name in self._products.keys():
+            regex = '\W*({})\W*'.format(query)
+            result = re.search(regex, product_name, flags=re.IGNORECASE)
+            if result: matches.append(product_name)
+
+        return matches
+
+    def _display_all_products(self):
+        for product in self._products:
+            self._products[product].pack(fill=BOTH, pady=2)
 
     def _on_search_ask(self, event):
-        data = event.data
+        matches = self._search_product(event.data)
+        self._show_products(matches)
 
-        self.database.query("select * from products where name like '%{}%'".format(data))
-        fetched_products = self.database.fetch_all()
-        if fetched_products:
-            for key in self._products.keys():
-                self._products[key].pack_forget()
-                self._products[key].destroy()
-            for product in fetched_products:
-                self._create_product(product[0], BytesIO(product[1]))
+    def _show_products(self, products):
+        for product in self._products.keys():
+            self._products[product].pack_forget()
+        for product in products:
+            self._products[product].pack(fill=BOTH, pady=2)
 
     def _create_product(self, name, picture):
         product = Product(self.frame, name=name, picture=picture)    
         self._products[name] = product
         product.pack_propagate(0)
-        product.pack(fill=BOTH, pady=2)
+
+        return product
 
