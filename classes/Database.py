@@ -8,8 +8,11 @@ class Database():
             self.connection = sqlite3.connect('data.db')
             self.cursor = self.connection.cursor()
 
-        def query(self, query):
-            self.cursor.execute(query)
+        def query(self, query, sequence=None):
+            if sequence == None:
+                self.cursor.execute(query)
+            else:
+                self.cursor.execute(query, sequence)
             self.connection.commit()
 
         def fetch_one(self):

@@ -1,4 +1,5 @@
 from tkinter import *
+from classes.CustomButton import *
 from classes.BaseClass import *
 from classes.Scrollable import *
 from classes.Product import *
@@ -17,18 +18,13 @@ class RecipesList(Frame, BaseClass, Scrollable):
 
         self.create_recipes()
         
-        add_new = Button(
+        add_new = CustomButton(
             self,
+            view='border_orange',
             text='New',
-            bg='orange',
-            fg='white',
-            borderwidth=1,
-            highlightthickness=1,
-            highlightbackground='white',
-            highlightcolor='white',
             width=5,
             height=1,
-            font=('Halvetica', 14, 'normal', 'bold')
+            font=(self.default_font, 14, 'bold')
         )
         add_new.place(relx=1, rely=1, x=-110, y=-40)
 

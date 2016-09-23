@@ -1,5 +1,7 @@
 from tkinter import *
-from PIL import Image, ImageTk
+from classes.CustomButton import *
+from classes.CustomLabel import *
+from classes.CustomPicture import *
 from classes.BaseClass import *
 
 class Product(Frame, BaseClass):
@@ -14,42 +16,33 @@ class Product(Frame, BaseClass):
 
         Grid.columnconfigure(self, 1, weight=1)
         
-        image_size = 70
-
-        picture = ImageTk.PhotoImage(Image.open(self.picture).resize((image_size, image_size), Image.ANTIALIAS))
-        picture_label = Label(self, image=picture, bg='lightgrey')
-        picture_label.image = picture
-        picture_label.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
-
-        name = Label(
+        picture = CustomPicture(
             self,
-            text=self.name,
-            bg='white',
-            font=('Halvetica', 12, 'normal', 'bold')
+            picture=self.picture,
+            size=70
+        )
+        picture.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
+
+        name = CustomLabel(
+            self,
+            font=(self.default_font, 11, 'bold'),
+            text=self.name
         )
         name.grid(column=1, row=1, sticky=W, padx=(10, 0), pady=(0, 10))
 
-        delete = Button(
+        delete = CustomButton(
             self,
+            view='normal_red',
             text='Delete',
-            bg='white',
-            fg='red',
-            command=self.delete_event,
-            borderwidth=0,
-            highlightthickness=0,
-            font=('Halvetica', 10, 'normal', 'underline')
+            command=self.delete_event
         )
         delete.grid(column=0, row=0, sticky=W, pady=(10, 5), padx=(15, 0))
 
-        edit = Button(
+        edit = CustomButton(
             self,
+            view='normal_green',
             text='Edit',
-            bg='white',
-            fg='green',
-            borderwidth=0,
-            highlightthickness=0,
-            command=self.edit_event,
-            font=('Halvetica', 10, 'normal', 'underline')
+            command=self.edit_event
         )
         edit.grid(column=1, row=0, sticky=E, pady=(10, 5), padx=(0, 15))
 

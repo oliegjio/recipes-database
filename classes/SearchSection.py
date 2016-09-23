@@ -1,4 +1,7 @@
 from tkinter import *
+from classes.CustomButton import *
+from classes.CustomLabel import *
+from classes.CustomEntry import *
 from classes.BaseClass import *
 from classes.InputDropdown import *
 from classes.SearchEvent import *
@@ -17,18 +20,17 @@ class SearchSection(Frame, BaseClass):
         Grid.columnconfigure(self, 1, weight=1)
         Grid.columnconfigure(self, 2, weight=1)
 
-        self._switcher = Button(
+        self._switcher = CustomButton(
             self,
+            view='border_green',
             text='Show Available',
-            bg='sea green',
-            fg='white',
-            font=('Halvetica', 14, 'normal', 'bold'),
+            font=(self.default_font, 14, 'normal', 'bold'),
             height=1,
             width=14
         )
         self._switcher.grid(column=0, row=0)
 
-        self._search_label = Label(
+        self._search_label = CustomLabel(
             self,
             text='Search: ',
             bg='white smoke',
@@ -36,11 +38,10 @@ class SearchSection(Frame, BaseClass):
         )
         self._search_label.grid(column=1, row=0, sticky=E)
 
-        self._search_input = Entry(
+        self._search_input = CustomEntry(
             self,
             text='Text',
-            width=50,
-            font=('Halvetica', 12, 'normal', 'normal')
+            width=50
         )
         self._search_input.grid(column=2, row=0, padx=(0, 40), sticky=W)
         self._search_input.bind('<Key>', self._search_input_key)
