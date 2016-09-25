@@ -3,6 +3,7 @@ from classes.CustomButton import *
 from classes.CustomLabel import *
 from classes.BaseClass import *
 from classes.CustomPicture import *
+from classes.RecipeExpandEvent import *
 from PIL import Image, ImageTk
 
 class Recipe(Frame):
@@ -13,6 +14,16 @@ class Recipe(Frame):
 
         self.parent = parent
         self['bg'] = 'white'
+        self._ingredients = list()
+        self._description = """
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.
+
+Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
+
+Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.
+
+Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.
+        """
 
         self._button_delete = CustomButton(
             self,
@@ -29,10 +40,6 @@ class Recipe(Frame):
         )
         self._button_edit.grid(row=0, column=1, pady=(10, 10), padx=(0, 10), sticky=E)
 
-        # picture = ImageTk.PhotoImage(Image.open('cake.jpg').resize((image_size, image_size), Image.ANTIALIAS))
-        # picture_label = CustomLabel(self, image=picture, bg='lightgrey')
-        # picture_label.image = picture
-        # picture_label.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
         self._picture = CustomPicture(self, picture=self._get_placeholder(), size=150)
         self._picture.grid(column=0, row=1, pady=(0, 10), padx=(10, 0))
         
@@ -78,6 +85,43 @@ class Recipe(Frame):
             justify=LEFT
         )
         self._label_ingredients_column_2.grid(row=1, column=1, sticky=W+N, padx=(0, 50))
+
+        self._label_name.bind('<Button-1>', self._expand)
+        self._picture.bind('<Button-1>', self._expand)
+        self._label_ingredients_column_1.bind('<Button-1>', self._expand)
+        self._label_ingredients_column_2.bind('<Button-1>', self._expand)
+
+        self.event_dispatcher.add_event_listener(RecipeExpandEvent.ASK, self._shrink)
+
+    def _shrink(self, event):
+        data = event.data
+        if data == self: return
+        else:
+            if hasattr(self, '_label_description') and self._label_description:
+                self._label_description.grid_forget()
+                self._label_description.destroy()
+                self._label_description = None
+                self._label_description_title.grid_forget()
+                self._label_description_title.destroy()
+                self._label_description_title = None
+
+    def _expand(self, event):
+        self.event_dispatcher.dispatch_event(RecipeExpandEvent(RecipeExpandEvent.ASK, self))
+
+        self._label_description_title = CustomLabel(
+            self,
+            text='Recipe:',
+            font=(self.default_font, 14, 'bold')
+        )
+        self._label_description_title.grid(row=2, column=0, columnspan=2)
+
+        self._label_description = CustomLabel(
+            self,
+            text=self._description,
+            wraplength=(self.winfo_width() - 40),
+            justify=LEFT
+        )
+        self._label_description.grid(row=3, column=0, columnspan=2)
 
     def _get_placeholder(self):
         self.database.query('select picture from products where name = "{}"'.format('Apple'))

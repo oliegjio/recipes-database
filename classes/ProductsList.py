@@ -17,8 +17,6 @@ class ProductsList(Frame, BaseClass, Scrollable):
         self.parent = parent
         self.frame['bg'] = 'lightgrey'
 
-        self._visible_products = list()
-
         self._button_add_new = CustomButton(
             self,
             view='border_orange',

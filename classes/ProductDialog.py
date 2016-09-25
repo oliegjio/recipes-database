@@ -17,7 +17,7 @@ class ProductDialog(Toplevel, BaseClass):
         self.parent = parent
         self['bg'] = 'white'
 
-        self.geometry('400x350')
+        self.geometry('500x350')
 
         for i in range(0, 4):
             Grid.columnconfigure(self, i, weight=1)
@@ -56,14 +56,17 @@ class ProductDialog(Toplevel, BaseClass):
         )
         self._picture.grid(column=1, row=0, pady=(20, 0))
 
-        self._entry_name = CustomEntry(self)
-        self._entry_name.grid(row=2, column=1, columnspan=2)
+        self._entry_name = CustomEntry(
+            self,
+            width=25
+        )
+        self._entry_name.grid(row=2, column=1, columnspan=2, sticky=W)
 
         self._label_name = CustomLabel(
             self,
             text='Product Name: '
         )
-        self._label_name.grid(row=2, column=0, sticky=E)
+        self._label_name.grid(row=2, column=0, sticky=E, padx=(0, 10))
 
     def _on_button_change_picture_click(self):
         picture_path = filedialog.askopenfilename()
