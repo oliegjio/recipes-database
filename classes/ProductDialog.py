@@ -10,9 +10,9 @@ from tkinter import filedialog
 
 class ProductDialog(Toplevel, BaseClass):
 
-    def __init__(self, parent, data=None):
-        Toplevel.__init__(self, parent)
+    def __init__(self, parent, **kw):
         BaseClass.__init__(self)
+        Toplevel.__init__(self, parent)
 
         self.parent = parent
         self['bg'] = 'white'

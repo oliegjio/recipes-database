@@ -3,6 +3,7 @@ from classes.CustomButton import *
 from classes.CustomLabel import *
 from classes.CustomPicture import *
 from classes.BaseClass import *
+from classes.ProductDeleteDialog import *
 
 class Product(Frame, BaseClass):
 
@@ -47,7 +48,7 @@ class Product(Frame, BaseClass):
         self._button_edit_product.grid(column=1, row=0, sticky=E, pady=(10, 5), padx=(0, 15))
 
     def _on_button_delete_product_click(self):
-        print('Delete event')
+        ProductDeleteDialog(self, data=self._name)
 
     def _on_button_edit_product_click(self):
         print('Edit event')

@@ -4,6 +4,7 @@ from classes.BaseClass import *
 from classes.Scrollable import *
 from classes.Product import *
 from classes.Recipe import *
+from classes.RecipeDialog import *
 
 class RecipesList(Frame, BaseClass, Scrollable):
 
@@ -27,6 +28,11 @@ class RecipesList(Frame, BaseClass, Scrollable):
             font=(self.default_font, 14, 'bold')
         )
         self._button_add_new.place(relx=1, rely=1, x=-110, y=-40)
+
+        self._button_add_new.bind('<Button-1>', self._on_button_add_new_click)
+
+    def _on_button_add_new_click(self, event):
+        RecipeDialog(self)
 
     def _create_recipes(self):
         for i in range(0, 30):

@@ -5,6 +5,7 @@ from classes.Scrollable import *
 from classes.SearchEvent import *
 from classes.NewProductEvent import *
 from classes.ProductDialog import *
+from classes.DeleteProductEvent import *
 import re
 
 class ProductsList(Frame, BaseClass, Scrollable):
@@ -33,6 +34,18 @@ class ProductsList(Frame, BaseClass, Scrollable):
 
         self.event_dispatcher.add_event_listener(SearchEvent.ASK, self._on_search_event_ask)
         self.event_dispatcher.add_event_listener(NewProductEvent.ASK, self._on_new_product_event_ask)
+        self.event_dispatcher.add_event_listener(DeleteProductEvent.ASK, self._on_delete_product_event_ask)
+
+    def _on_delete_product_event_ask(self, event):
+        data = event.data
+
+        self.database.query('delete from products where name = "{}"'.format(data))
+
+        self._products[data].pack_forget()
+        self._products[data].destroy()
+        del self._products[data]
+
+        self._show_all_products()
 
     def _on_new_product_event_ask(self, event):
         data = event.data
@@ -40,7 +53,7 @@ class ProductsList(Frame, BaseClass, Scrollable):
         self._show_all_products()
 
     def _on_button_add_new_click(self, event):
-        ProductDialog(self.get_root())
+        ProductDialog(self)
     
     def _forget_products(self):
         for product in self._products.keys():

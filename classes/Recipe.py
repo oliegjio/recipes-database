@@ -124,5 +124,5 @@ Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulpu
         self._label_description.grid(row=3, column=0, columnspan=2)
 
     def _get_placeholder(self):
-        self.database.query('select picture from products where name = "{}"'.format('Apple'))
+        self.database.query('select picture from products where name = "{}"'.format('Banana'))
         return self.database.fetch_one()[0]
