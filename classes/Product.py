@@ -51,4 +51,4 @@ class Product(Frame, BaseClass):
         ProductDeleteDialog(self, data=self._name)
 
     def _on_button_edit_product_click(self):
-        print('Edit event')
+        pass
