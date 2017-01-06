@@ -60,13 +60,13 @@ class ProductDialogNew(Toplevel, BaseClass):
             self,
             width=25
         )
-        self._entry_name.grid(row=2, column=1, columnspan=2, sticky=W)
+        self._entry_name.grid(row=2, column=1, columnspan=2, sticky=W+E)
 
         self._label_name = CustomLabel(
             self,
             text='Product Name: '
         )
-        self._label_name.grid(row=2, column=0, sticky=E, padx=(0, 10))
+        self._label_name.grid(row=2, column=0, sticky=W+E)
 
     def _on_button_change_picture_click(self):
         picture_path = filedialog.askopenfilename()

@@ -13,11 +13,11 @@ class MainWindow(BaseClass, Frame):
 
         self.columns_section = ColumnsSection(self)
         self.columns_section.grid(row=1, column=0, rowspan=10, sticky=N+S+W+E)
-        Grid.rowconfigure(self, 1, weight=4)
-        Grid.columnconfigure(self, 0, weight=2)
+        Grid.rowconfigure(self, 1, weight=9)
+        Grid.columnconfigure(self, 0, weight=9)
 
         self.search_section = SearchSection(self)
-        self.search_section.grid(row=0, column=0, rowspan=1, sticky=N+S+W+E)
+        self.search_section.grid(row=0, column=0, sticky=N+S+W+E)
         Grid.rowconfigure(self, 0, weight=1)
         Grid.columnconfigure(self, 0, weight=1)
 

@@ -49,6 +49,7 @@ Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulpu
         self._frame_text.grid(row=1, column=1, sticky=N+E+W+S)
 
         Grid.columnconfigure(self._frame_text, 0, weight=1)
+        Grid.columnconfigure(self._frame_text, 1, weight=1)
 
         self._label_name = CustomLabel(
             self._frame_text,
