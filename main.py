@@ -2,6 +2,7 @@ from tkinter import *
 import sqlite3
 from classes.ColumnsSection import *
 from classes.SearchSection import *
+from PIL import Image, ImageTk
 
 # connection = sqlite3.connect('data.db')
 # connection.execute('''
@@ -27,7 +28,9 @@ class MainWindow(BaseClass, Frame):
 
 def main():
     root = Tk()
+    icon = ImageTk.PhotoImage(Image.open('icon.png'))
     root.title('Recipes Database')
+    root.tk.call('wm', 'iconphoto', root._w, icon)
     root.geometry('1000x600')
 
     main_window = MainWindow(root)
