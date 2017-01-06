@@ -4,7 +4,7 @@ from classes.CustomLabel import *
 from classes.CustomEntry import *
 from classes.BaseClass import *
 from classes.InputDropdown import *
-from classes.SearchEvent import *
+from classes.events.SearchEvent import *
 
 class SearchSection(Frame, BaseClass):
 

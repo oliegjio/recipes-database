@@ -2,10 +2,10 @@ from tkinter import *
 from classes.Product import *
 from classes.BaseClass import *
 from classes.Scrollable import *
-from classes.SearchEvent import *
-from classes.NewProductEvent import *
-from classes.ProductDialog import *
-from classes.DeleteProductEvent import *
+from classes.events.SearchEvent import *
+from classes.events.NewProductEvent import *
+from classes.ProductDialogNew import *
+from classes.events.DeleteProductEvent import *
 import re
 
 class ProductsList(Frame, BaseClass, Scrollable):
@@ -53,7 +53,7 @@ class ProductsList(Frame, BaseClass, Scrollable):
         self._show_all_products()
 
     def _on_button_add_new_click(self, event):
-        ProductDialog(self)
+        ProductDialogNew(self)
     
     def _forget_products(self):
         for product in self._products.keys():

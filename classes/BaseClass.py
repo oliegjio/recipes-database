@@ -1,5 +1,5 @@
-from classes.Event import *
-from classes.EventDispatcher import *
+from classes.events.Event import *
+from classes.events.EventDispatcher import *
 from classes.Database import *
 
 class BaseClass():

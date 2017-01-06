@@ -3,7 +3,7 @@ from classes.CustomButton import *
 from classes.CustomLabel import *
 from classes.BaseClass import *
 from classes.CustomPicture import *
-from classes.RecipeExpandEvent import *
+from classes.events.RecipeExpandEvent import *
 from PIL import Image, ImageTk
 
 class Recipe(Frame):

@@ -1,10 +1,10 @@
 from tkinter import *
 from classes.BaseClass import *
 from classes.CustomButton import *
-from classes.DeleteProductEvent import *
+from classes.events.DeleteProductEvent import *
 from classes.CustomLabel import *
 
-class ProductDeleteDialog(Toplevel, BaseClass):
+class ProductDialogDelete(Toplevel, BaseClass):
 
     def __init__(self, parent, **kw):
         BaseClass.__init__(self)

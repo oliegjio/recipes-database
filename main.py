@@ -4,11 +4,6 @@ from classes.ColumnsSection import *
 from classes.SearchSection import *
 from PIL import Image, ImageTk
 
-# connection = sqlite3.connect('data.db')
-# connection.execute('''
-#         select * from products
-#         ''')
-
 class MainWindow(BaseClass, Frame):
 
     def __init__(self, root):
@@ -28,7 +23,7 @@ class MainWindow(BaseClass, Frame):
 
 def main():
     root = Tk()
-    icon = ImageTk.PhotoImage(Image.open('icon.png'))
+    icon = ImageTk.PhotoImage(Image.open('images/icon.png'))
     root.title('Recipes Database')
     root.tk.call('wm', 'iconphoto', root._w, icon)
     root.geometry('1000x600')

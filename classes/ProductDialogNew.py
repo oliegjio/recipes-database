@@ -4,11 +4,11 @@ from classes.CustomLabel import *
 from classes.CustomPicture import *
 from classes.CustomEntry import *
 from classes.BaseClass import *
-from classes.NewProductEvent import *
+from classes.events.NewProductEvent import *
 from PIL import Image, ImageTk
 from tkinter import filedialog
 
-class ProductDialog(Toplevel, BaseClass):
+class ProductDialogNew(Toplevel, BaseClass):
 
     def __init__(self, parent, **kw):
         BaseClass.__init__(self)

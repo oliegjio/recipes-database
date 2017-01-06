@@ -1,4 +1,4 @@
-from classes.Event import *
+from classes.events.Event import *
 
 class NewProductEvent(Event):
     ASK = 'NewProductEventAsk'

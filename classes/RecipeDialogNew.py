@@ -3,7 +3,7 @@ from classes.BaseClass import *
 from classes.CustomButton import *
 from classes.CustomLabel import *
 
-class RecipeDialog(Toplevel, BaseClass):
+class RecipeDialogNew(Toplevel, BaseClass):
 
     def __init__(self, parent, **kw):
         BaseClass.__init__(self)
