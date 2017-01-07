@@ -13,8 +13,8 @@ class RecipeDialogNew(Toplevel, BaseClass):
 
         self.parent = parent
         self['bg'] = 'white'
-        self.geometry('480x500')
-        self._list_entry_ingredient = list() # TODO!!!!
+        self.geometry('480x650')
+        # self._list_entry_ingredient = list() # TODO!!!!
 
         self._vertical_padding = 20
         self._horizontal_padding = 20
@@ -22,22 +22,6 @@ class RecipeDialogNew(Toplevel, BaseClass):
         for i in range(0, 8):
             Grid.columnconfigure(self, i, weight=1)
             Grid.rowconfigure(self, i, weight=1)
-
-        self._button_exit = CustomButton(
-            self,
-            view='normal_red',
-            text='Cancel'
-        )
-        self._button_exit.grid(row=8, column=0, sticky=N+E+W+S, pady=(0, self._vertical_padding), padx=(self._horizontal_padding, 0))
-        self._button_exit.bind('<Button-1>', self._on_button_exit_click)
-
-        self._button_apply = CustomButton(
-            self,
-            view='normal_green',
-            text='Apply'
-        )
-        self._button_apply.grid(row=8, column=2, sticky=N+E+W+S, pady=(0, self._vertical_padding), padx=(0, self._horizontal_padding))
-        self._button_apply.bind('<Button-1>', self._on_button_apply_click)
 
         self._label_name = CustomLabel(
             self,
@@ -50,6 +34,32 @@ class RecipeDialogNew(Toplevel, BaseClass):
             width=35
         )
         self._entry_name.grid(row=1, column=1, sticky=N)
+
+        self._label_ingredients = CustomLabel(
+            self,
+            text='Ingredients:'
+        )
+        self._label_ingredients.grid(row=2, column=1, sticky=S+W)
+
+        self._frame_ingredients = Frame(self)
+        self._frame_ingredients.grid(row=3, column=1, sticky=N+E+W+S)
+
+        self._scrollbar_ingredients = Scrollbar(
+            self._frame_ingredients,
+            orient=VERTICAL
+        )
+
+        self._listbox_ingredients = Listbox(
+            self._frame_ingredients,
+            selectmode=EXTENDED,
+            yscrollcommand=self._scrollbar_ingredients.set
+        )
+        self._scrollbar_ingredients.config(command=self._listbox_ingredients.yview)
+        self._listbox_ingredients.pack(side=LEFT, fill=BOTH, expand=1)
+        self._scrollbar_ingredients.pack(side=RIGHT, fill=BOTH)
+
+        for item in self._get_all_ingredients():
+            self._listbox_ingredients.insert(END, item[0])
 
         self._label_description = CustomLabel(
             self, 
@@ -78,6 +88,22 @@ class RecipeDialogNew(Toplevel, BaseClass):
         )
         self._button_picture.grid(row=7, column=1, sticky=N)
 
+        self._button_exit = CustomButton(
+            self,
+            view='normal_red',
+            text='Cancel'
+        )
+        self._button_exit.grid(row=8, column=0, sticky=N+E+W+S, pady=(0, self._vertical_padding), padx=(self._horizontal_padding, 0))
+        self._button_exit.bind('<Button-1>', self._on_button_exit_click)
+
+        self._button_apply = CustomButton(
+            self,
+            view='normal_green',
+            text='Apply'
+        )
+        self._button_apply.grid(row=8, column=2, sticky=N+E+W+S, pady=(0, self._vertical_padding), padx=(0, self._horizontal_padding))
+        self._button_apply.bind('<Button-1>', self._on_button_apply_click)
+
     def _on_button_apply_click(self, event):
         pass
         
@@ -87,3 +113,8 @@ class RecipeDialogNew(Toplevel, BaseClass):
     def _get_placeholder(self):
         self.database.query('select `blob` from meta where text = "placeholder"')
         return self.database.fetch_one()[0]
+
+    def _get_all_ingredients(self):
+        self.database.query('select `name` from products')
+        self._ingredients = self.database.fetch_all()
+        return self._ingredients
