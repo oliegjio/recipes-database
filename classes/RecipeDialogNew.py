@@ -4,6 +4,7 @@ from classes.CustomButton import *
 from classes.CustomLabel import *
 from classes.CustomEntry import *
 from classes.CustomPicture import *
+from classes.events.NewRecipeEvent import *
 
 class RecipeDialogNew(Toplevel, BaseClass):
 
@@ -14,7 +15,6 @@ class RecipeDialogNew(Toplevel, BaseClass):
         self.parent = parent
         self['bg'] = 'white'
         self.geometry('480x650')
-        # self._list_entry_ingredient = list() # TODO!!!!
 
         self._vertical_padding = 20
         self._horizontal_padding = 20
@@ -87,6 +87,7 @@ class RecipeDialogNew(Toplevel, BaseClass):
             text='Change Picture'
         )
         self._button_picture.grid(row=7, column=1, sticky=N)
+        self._button_picture.bind('<Button-1>', self._on_button_picture_click)
 
         self._button_exit = CustomButton(
             self,
@@ -105,7 +106,32 @@ class RecipeDialogNew(Toplevel, BaseClass):
         self._button_apply.bind('<Button-1>', self._on_button_apply_click)
 
     def _on_button_apply_click(self, event):
-        pass
+        if self._entry_description.get(1.0, END) == '' or not hasattr(self, '_new_picture'): return
+
+        ingredients_indexes = self._listbox_ingredients.curselection()
+        ingredients_string = ''
+        for i in ingredients_indexes:
+            ingredients_string += '|' + self._listbox_ingredients.get(i) + '|'
+
+        self.database.query(
+            'insert into recipes (name, description, picture, ingredients) values (?, ?, ?, ?)',
+            [
+                self._entry_name.get(),
+                self._entry_description.get(1.0, END),
+                self._new_picture,
+                ingredients_string
+            ]
+        )
+
+        data = dict()
+        data['name'] = self._entry_name.get()
+        data['description'] = self._entry_description.get(1.0, END)
+        data['picture'] = self._new_picture
+        data['ingredients'] = ingredients_string
+
+        self.event_dispatcher.dispatch_event(NewRecipeEvent(NewRecipeEvent.ASK, data))
+
+        self.destroy()
         
     def _on_button_exit_click(self, event):
         self.destroy()
@@ -118,3 +144,13 @@ class RecipeDialogNew(Toplevel, BaseClass):
         self.database.query('select `name` from products')
         self._ingredients = self.database.fetch_all()
         return self._ingredients
+
+    def _on_button_picture_click(self, event):
+        picture_path  = filedialog.askopenfilename()
+
+        the_file = open(picture_path, 'rb')
+        self._new_picture = the_file.read()
+
+        the_file.close()
+
+        self._picture.set_picture(self._new_picture)
