@@ -9,7 +9,9 @@ class CustomPicture(CustomLabel, BaseClass):
     def __init__(self, parent, **kw):
         BaseClass.__init__(self)
 
-        picture = ImageTk.PhotoImage(Image.open(BytesIO(kw['picture'])).resize((kw['size'], kw['size']), Image.ANTIALIAS))
+        picture = ImageTk.PhotoImage(
+            Image.open(BytesIO(kw['picture'])).resize((kw['size'], kw['size']),
+            Image.ANTIALIAS))
         self._size = kw['size']
 
         del kw['picture']

@@ -1,6 +1,10 @@
 import sqlite3
 
 class Database():
+""" Class providing database access.
+
+Can query data, and return it.
+"""
 
     class __Database():
 
@@ -9,6 +13,15 @@ class Database():
             self._cursor = self._connection.cursor()
 
         def query(self, query, sequence=None):
+            """ Query the database.
+            
+            Takes a query. Replaces placeholders in query with values in sequence dictionary (if present). Executes query. Commits changes to the database.
+            
+            Arguments:
+                query {str} -- Containing a query, may contain '?' placeholders.
+                sequence {dict} -- Contains '?' placeholders' data. Defaults to None.
+            """
+
             if sequence == None:
                 self._cursor.execute(query)
             else:
@@ -16,11 +29,22 @@ class Database():
             self._connection.commit()
 
         def fetch_one(self):
+            """ Iterate through data. Give next element of current data sequence.
+            
+            Returns:
+                {None} -- Next element of data sequence, fetched from database with last query.
+            """
+
             return self._cursor.fetchone()
 
         def fetch_all(self):
-            return self._cursor.fetchall()
+            """ Gives all elments in current data sequence as dictionary.
             
+            Returns:
+                {Dictionary} -- Contains all the data, fetched from last database call.
+            """
+
+            return self._cursor.fetchall()
 
     instance = None
 
