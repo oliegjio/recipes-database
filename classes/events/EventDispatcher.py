@@ -1,7 +1,7 @@
 class EventDispatcher():
-""" Dispatch event across appliaciton.
+""" Application event manager.
 
-Singletone class that can dispatch events, add or remove listeners to some event.
+Singletone class that can send events, add or remove listeners to some event.
 """
 
     class __EventDispatcher():
@@ -13,7 +13,7 @@ Singletone class that can dispatch events, add or remove listeners to some event
             self._events = None
 
         def has_listener(self, event_type, listener):
-            """ Check if the event has the listener.
+            """ Checks if the event has the listener.
             
             Arguments:
                 event_type {Event} -- The event to check for the listener.
@@ -29,7 +29,7 @@ Singletone class that can dispatch events, add or remove listeners to some event
                 return False
 
         def dispatch_event(self, event):
-            """ Dispatch the event to all listeners attached to it.
+            """ Sends the event to all listeners attached to it.
 
             The event will be dispatched only if there is listeners attached to it.
             
@@ -44,7 +44,7 @@ Singletone class that can dispatch events, add or remove listeners to some event
                     listener(event)
 
         def add_event_listener(self, event_type, listener):
-            """ Attach the listener to the event.
+            """ Attaches the listener to the event.
             
             Arguments:
                 event_type {Event} -- The event to listen.
@@ -59,10 +59,10 @@ Singletone class that can dispatch events, add or remove listeners to some event
                 self._events[event_type] = listeners
 
         def remove_event_listener(self, event_type, listener):
-            """ Detach the listener from the event.
+            """ Detaches the listener from the event.
             
             Arguments:
-                event_type {Event} -- Event from which detach the listener.
+                event_type {Event} -- Event from which to detach the listener.
                 listener {function} -- Listener funciton to detach from the event.
             """
 
