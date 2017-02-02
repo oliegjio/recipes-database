@@ -1,15 +1,24 @@
-import sqlite3
+import sqlite3, os
 
 class Database():
-""" Class providing database access.
+    """ Class providing database access.
 
-Can query data, and return it.
-"""
+    Can query data, and return it.
+    """
 
     class __Database():
 
-        def __init__(self):
-            self._connection = sqlite3.connect('data.db')
+        def __init__(self, path):
+            if not os.path.isfile(path):
+                raise Exception("""Database does not exists in the given path!""")
+
+            if not os.access(path, os.R_OK):
+                raise Exception("""Cannot read the database!""")
+
+            if not os.access(path, os.W_OK):
+                raise Exception("""Cannot write to the database!""")
+
+            self._connection = sqlite3.connect(path)
             self._cursor = self._connection.cursor()
 
         def query(self, query, sequence=None):
@@ -50,7 +59,7 @@ Can query data, and return it.
 
     def __new__(cls):
         if Database.instance == None:
-            Database.instance = Database.__Database()
+            Database.instance = Database.__Database('data.db')
         return Database.instance
 
     def __getattr__(self, name):

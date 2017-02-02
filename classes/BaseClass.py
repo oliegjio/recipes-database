@@ -9,16 +9,16 @@ class BaseClass():
         self.database = Database()
         self.default_font = 'Halvetica'
 
-    def update_root(self):
-        self.update()
-        self.update_idletasks()
-        if(getattr(self.parent, 'parent', False)):
-            self.parent.update_root()
-        else:
-            self.parent.update()
-            self.parent.update_idletasks()
+    # def update_root(self):
+    #     self.update()
+    #     self.update_idletasks()
+    #     if getattr(self.parent, 'parent', False):
+    #         self.parent.update_root()
+    #     else:
+    #         self.parent.update()
+    #         self.parent.update_idletasks()
 
     def get_root(self):
-        if(getattr(self, 'root', False)):
+        if getattr(self, 'root', False):
             return self.root
         return self.parent.get_root()
