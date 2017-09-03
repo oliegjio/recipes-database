@@ -1,8 +1,8 @@
 class EventDispatcher():
-""" Application event manager.
+    """ Application event manager.
 
-Singletone class that can send events, add or remove listeners to some event.
-"""
+    Singletone class that can send events, add or remove listeners to some event.
+    """
 
     class __EventDispatcher():
 
